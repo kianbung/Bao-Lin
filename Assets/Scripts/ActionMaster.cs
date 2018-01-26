@@ -13,7 +13,20 @@ public class ActionMaster {
     //possible actions
     public enum Action {Tidy, Reset, EndTurn, EndGame};
 
-    public Action Bowl(int pins) {
+    // and now you're thinking with portals
+    // so this is how you recycle code instead of redoing everything from scratch
+    public static Action NextAction(List<int> pinFalls) {
+        ActionMaster am = new ActionMaster(); // instantiate new ActionMaster and currentAction, so don't fuck with numbers
+        Action currentAction = new Action();
+
+        foreach (int pin in pinFalls) {
+            currentAction = am.Bowl(pin); // cycle and loop Bowl(), until the last action is received
+        }
+
+        return currentAction;
+    }
+
+    public Action Bowl(int pins) { // TODO - make private when final
 
         if (pins < 0 || pins > 10) { throw new UnityException("Pins less than zero or more than 10!"); }
 
@@ -82,6 +95,8 @@ public class ActionMaster {
         return bowlScores[bowl];
     }
 
+
+    /* lmao kaypo redo everything
     public static Action NextAction(List<int> pinFalls) {
 
         int currentBowlIndex = pinFalls.Count-1; //convert here first, make life easier later; index starts from 0
@@ -129,5 +144,5 @@ public class ActionMaster {
         }
 
         throw new UnityException("wtf nigga");
-    }
+    } */
 }
