@@ -8,7 +8,7 @@ public class PinCounter : MonoBehaviour {
     private int lastStandingCount = -1;
     private float lastChangeTime;
     private int lastSettledCount = 10;
-
+    GameManager gameManager;
 
 
     private Pin[] standingPins;
@@ -19,7 +19,7 @@ public class PinCounter : MonoBehaviour {
     void Start () {
         standingPins = GameObject.FindObjectsOfType<Pin>();
         pinCounterText = GameObject.Find("PinCount").GetComponent<Text>();
-
+        gameManager = FindObjectOfType<GameManager>();
 
     }
 
@@ -67,12 +67,12 @@ public class PinCounter : MonoBehaviour {
         if (lastChangeTime >= 3) {
             ChangeTextColor(Color.green);
 
-            GameManager gm = FindObjectOfType<GameManager>();
+            
             int pinsFallen = lastSettledCount - lastStandingCount;
 
-            gm.PinsHaveSettled(pinsFallen);
+            gameManager.PinsHaveSettled(pinsFallen);
             lastStandingCount = -1;
-
+            ballLeftBox = false;
         }
     }
 
@@ -84,11 +84,7 @@ public class PinCounter : MonoBehaviour {
         }
     }
 
-    public void BallLeftBox(bool set) {
-        ballLeftBox = set;
-    }
-
-    public void ChangeTextColor(Color color) {
+     public void ChangeTextColor(Color color) {
         pinCounterText.color = color;
 
     }

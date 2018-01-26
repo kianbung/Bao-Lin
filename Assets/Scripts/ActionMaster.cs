@@ -9,7 +9,7 @@ public class ActionMaster {
     // the number of bowls we have taken
     private int bowlCount = 1;
     private int[] bowlScores = new int[22]; //21 frames maximum (+1, cause arrays start at 0)
-
+    
     //possible actions
     public enum Action {Tidy, Reset, EndTurn, EndGame};
 
@@ -26,7 +26,7 @@ public class ActionMaster {
         return currentAction;
     }
 
-    public Action Bowl(int pins) { // TODO - make private when final
+    private Action Bowl(int pins) { 
 
         if (pins < 0 || pins > 10) { throw new UnityException("Pins less than zero or more than 10!"); }
 

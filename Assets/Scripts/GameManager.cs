@@ -4,20 +4,15 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    private Animator animator; // for GameMaster
-    private ActionMaster actionMaster = new ActionMaster();
-    private PinCounter pinCounter;
-
+    private PinSetter pinSetter;
     private Ball ball;
 
-    private List<int> pins = new List<int>();
+    private List<int> scoreList = new List<int>();
 
 	// Use this for initialization
 	void Start () {
         ball = GameObject.FindObjectOfType<Ball>();
-        pinCounter = FindObjectOfType<PinCounter>();
-        animator = pinCounter.GetComponent<Animator>(); // for GameMaster
-
+        pinSetter = GameObject.FindObjectOfType<PinSetter>();
 
     }
 
@@ -29,24 +24,17 @@ public class GameManager : MonoBehaviour {
     // TODO move to GameMaster when ready
     public void PinsHaveSettled(int pinsFallen) {
 
+        scoreList.Add(pinsFallen);
 
-        ActionMaster.Action action = actionMaster.Bowl(pinsFallen); // take action based on last round (if first frame)
+        //ActionMaster.Action action = actionMaster.Bowl(pinsFallen); // take action based on last round (if first frame)
 
-        if (action == ActionMaster.Action.Tidy) {
-            animator.SetTrigger("tidyTrigger");
-            pinCounter.ResetLastSettled(false);
-        } else if (action == ActionMaster.Action.EndTurn) {
-            animator.SetTrigger("resetTrigger");
-            pinCounter.ResetLastSettled(true);
-        } else { // need to expand to consider other actions, but fine for now
-            animator.SetTrigger("resetTrigger");
-            pinCounter.ResetLastSettled(true);
-        }
+        ActionMaster.Action action = ActionMaster.NextAction(scoreList); // variable size scorelist??! holy shit does that work?
+
+        pinSetter.PerformAction(action);
 
         print(pinsFallen);
         print(action);
 
-        pinCounter.BallLeftBox(false);
         ball.Reset();
 
     }
